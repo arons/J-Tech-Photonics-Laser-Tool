@@ -634,8 +634,11 @@ class LaserGcode(inkex.Effect):
             {"name": "--pass-depth", "type": str, "dest": "pass_depth", "default": 1,
              "help": "Depth of laser cut"},
 
-            {"name": "--power-delay", "type": str, "dest": "power_delay",
-             "default": "0", "help": "Laser power-on delay (ms},"},
+            {"name": "--power-on-delay", "type": str, "dest": "power_on_delay",
+             "default": "0", "help": "Laser power-on delay (s},"},
+             
+            {"name": "--power-off-delay", "type": str, "dest": "power_off_delay",
+             "default": "0", "help": "Laser power-off delay (s},"},
 
             {"name": "--suppress-all-messages", "type": inkex.Boolean,
              "dest": "suppress_all_messages", "default": True,
@@ -1450,9 +1453,9 @@ class LaserGcode(inkex.Effect):
             "penetration feed": self.options.laser_speed,
             "feed": self.options.laser_speed,
             "gcode before path": ("G4 P0 \n" + self.options.laser_command + " S" + str(
-                int(self.options.laser_power)) + "\nG4 P" + self.options.power_delay),
+                int(self.options.laser_power)) + "\nG4 P" + self.options.power_on_delay),
             "gcode after path": (
-                    "G4 P0 \n" + self.options.laser_off_command + " S0" + "\n" + "G1 F" + self.options.travel_speed),
+                    "G4 P" + self.options.power_off_delay+" \n" + self.options.laser_off_command + " S0" + "\n" + "G1 F" + self.options.travel_speed),
         }
 
         self.get_info()
